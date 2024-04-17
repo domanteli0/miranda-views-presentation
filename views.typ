@@ -165,6 +165,7 @@
 ]
 
 #slide[=== SnocList
+#align(center +horizon)[
   #code(raw_text: "view list α ::= Nil | (list α) Snoc α
   in (x Cons Nil)            = Nil Snoc x
   in (x Cons (xs Sonc x'))   = (x Cons xs) Snoc x'
@@ -172,7 +173,9 @@
   out ((x Cons xs) Snoc x')  = x Cons (xs Snoc x')
 ")
 
-  TODO: pavyzdys
+  #code(raw_text: "last (xs Snoc x) = x")
+  #v(1em)
+]
 ]
 
 #slide[=== In, out & inout
@@ -188,17 +191,11 @@
 ]
 
 #slide[== Efektyvumas
-  #one-by-one[
     #v(1em)
 
     `1 Cons (2 Cons (3 Cons (4 Cons Nil)))` $=>$\
   
     $=>$ `((((Nil Snoc 1) Snoc 2) Snoc 3) Snoc 4)`
-
-  ][
-    #v(1em)
-    #code(raw_text: "list α :== Nil | Unit α | (list α) Join (list α)")
-  ]
 
   #pdfpc.speaker-note(
     "yra tam tikras šališkumas"
@@ -209,10 +206,11 @@
 #slide[== `Join` reprezentacija
   #align(center + horizon)[
   #one-by-one[
-    #v(1em)
+    #v(0.5em)
     #code(raw_text: "list α :== Nil | Unit α | (list α) Join (list α)")
   ][
-    #v(1em)
+    #v(0.5em)
+      #code(raw_text: "[1, 2]")
       #code(raw_text: "(Unit 1) Join (Unit 2)")
       #code(raw_text: "(Nil Join (Unit 1)) Join ((Unit 2) Join Nil)")
       #code(raw_text: "(Unit 1) Join (( Unit 2) Join Nil)")
@@ -242,15 +240,65 @@
 ]
 
 #slide[=== Pavyzdys: koordinatės
-  #image("img/view_coord.png", width: 50%)
+
+#code(raw_text: "abstype complex with
+  zpart, ypart, rpart, tpart :: complex -> real
+  mkcart, mkpole :: real -> real -> complex
+")
+
+#code(raw_text: "add c c' = mkcart (xpart c + xpart c') (ypart c + ypart c')
+mult c c' = mkpole (rpart c × rport c') (tpart c + tpart c')
+")
+
+]
+
+#slide[=== Pavyzdys: koordinatės
+
+#code(raw_text: "complex ::= Pole real real
+  in (Pole r t)  = Cart (r × cos t) (r × sin t)
+  out (Cart x y) = Pole (sqrt (x^2 + y^2)) (atan2 x y)")
+    
+#code(raw_text: "add (Cart x y)(Cart x' y' ) = Cart (x + x') (x + y')
+mul (Pole r t) (Pole r' t') = Pole (r × r') (t + t')")
+
+#code(raw_text: "abstype complex with
+  complex ::= Cort real real
+  complex ::= Pole real real
+")
 ]
 
 #slide[=== Kiti pritaikymai: `zip`
-  #image("img/view_zip.png", width: 26%)
+
+#code(raw_text: "view list (α, β) ::= Zip (list α, list β)
+  innout Nil = Zip (Nil, Nil)
+  innout ((a, b) Cons Zip (as, bs)) = Zip (a Cons as, 1 Cons bs)")
+
+#uncover(2)[
+#align(center + horizon)[
+#code(raw_text: "f cs = e as bs
+  where as = [a | (a, b) <- cs]
+        bs = [b | (a, b) <- cs]
+")
+
+$ arrow.b $
+
+#code(raw_text: "f (Zip (as, bs)) = e as bs")
+
+]
+]
+
 ]
 
 #slide[=== Kiti pritaikymai: predikatai
-  #image("img/m_pred.png")
+
+  #align(center + horizon)[
+  #code(size: 25pt, raw_text: "view int ::= EvenP int | OddP int
+in n         = EvenP n,  if n mod 2 = 0
+             = Oddp n,   if n mod 2 = 1
+out EvenP n  = n,        if n mod 2 = 0
+out OddP n   = n,        if n mod 2 = 1
+")
+  ]
 ]
 
 #slide[=== Kiti pritaikymai: `@`
@@ -397,33 +445,10 @@ fibx a b (Succ n) = fibx b (a+b) n
 
 ]
 
-#slide[== Diskusija / mano nuomonės
+#slide[== Išvados
 
-  - Abstrackija
-
-  - Performance
-
-]
-
-#slide[=== Efficiency?
-
-  #set text(size: 20pt)
-  #quote()[
-  The representation of the number seven is the data structure
-
-  `Succ (Succ (Succ (Succ (Succ (Succ (Succ Zero))))))`
-
-
-  Compared with the representation of integers built-in to the computer hardware, this representation is astonishingly inefficient. If we had followed the fundamental principle of dafa abstraction (or representation hiding) then this problem would not arise, because we would be free to implement naturaI numbers in any convenient way, including the built-in integer data type.
-  ]
-
-]
-
-#slide[=== Efficiency??
-
-  #set text(size: 20pt)
-  #quote()[
-    In short, pattern matching supports clear delinitiona and induction, but it requires that the representing type be a free data type and be visible. Data abstraction supports &Iicicncy, but it requires that the representing type be hidden. Thus, the programmer is often faced with an unenviabIe choice between clarity and efficiency.
+  #pad(1em)[
+    #quote("It is particularly worrying when we are forced to choose between valuable methods such as pattern matching and data abstraction. Views move this trade-off from the ‘necessary’ to the ‘avoidable’ category.")
   ]
 
 ]
