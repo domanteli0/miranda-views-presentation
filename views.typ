@@ -47,7 +47,7 @@
 // #pagebreak()
 // === Panašumai tarp `Idris` ir `Miranda`
 
-#slide[== Indukcija ir Pattern matching'as
+#slide[== Pattern matching'as
   #align(horizon + center)[
     #grid(columns: 3, rows: 1, gutter: 0.5em,
       [
@@ -271,7 +271,7 @@ mul (Pole r t) (Pole r' t') = Pole (r × r') (t + t')")
 
 #code(raw_text: "view list (α, β) ::= Zip (list α, list β)
   innout Nil = Zip (Nil, Nil)
-  innout ((a, b) Cons Zip (as, bs)) = Zip (a Cons as, 1 Cons bs)")
+  innout ((a, b) Cons Zip (as, bs)) = Zip (a Cons as, b Cons bs)")
 
 #uncover(2)[
 #align(center + horizon)[
@@ -447,10 +447,20 @@ fibx a b (Succ n) = fibx b (a+b) n
 
 #slide[== Išvados
 
-  #pad(1em)[
-    #quote("It is particularly worrying when we are forced to choose between valuable methods such as pattern matching and data abstraction. Views move this trade-off from the ‘necessary’ to the ‘avoidable’ category.")
+  #one-by-one[][
+    ✔ Abstracija \
+  ][
+    ✔ Efektyvumas (performance) \
+  ][
+    ✔ Įskaitomumas \
+  ][
+    #pad(1em)[
+      #quote("It is particularly worrying when we are forced to choose between valuable methods such as pattern matching and data abstraction. Views move this trade-off from the ‘necessary’ to the ‘avoidable’ category.")
+    ]
   ]
 
 ]
+
+#slide[#align(center + horizon)[#text(size: 40pt)[ *Klausimai?*]]]
 
 #slide[== Extra pavyzdys: medžiai]
